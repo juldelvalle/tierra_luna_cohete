@@ -8,7 +8,8 @@
  ** Curso: Laboratorio avanzado 3  2025-1                   **
  *************************************************************/
 /**                Imagenes necesaria                   *****/
-//coheteImg.png, tierraImg.png, lunaImg.png
+// coheteImg.png, /assets/tierraImg.png, lunaImg.png
+/*          REVISAR LA FUNCION preLoad en la linea 75     **/
 
 /**                librerias necesarias                 *****/
 //p5.js
@@ -73,9 +74,9 @@ let resetButton;
 
 function preload(){
   //Precarga las imagenes de directorio assets.
-  coheteImg  = loadImage('/assets/coheteImg.png');
-  tierraImg = loadImage('/assets/tierraImg.png');
-  lunaImg = loadImage('/assets/lunaImg.png');
+  coheteImg  = loadImage('coheteImg.png');
+  tierraImg = loadImage('tierraImg.png');
+  lunaImg = loadImage('lunaImg.png');
 }
 
 
