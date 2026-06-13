@@ -1,10 +1,9 @@
 
 /*************************************************************
- ********Problema de tres cuerpos restringido:   *************
- ********         Tierra, Luna y Cohete          *************
+ ******** Puntos de Lagrange del sistema Tierra-Luna   *******
  *************************************************************
- ** Autor: Juan Fernando Jaramillo                          **
- **        Juliana del Valle                                **                                                                        **
+ ** Autor:        Juliana del Valle                         **
+ **               Juan Fernando Jaramillo                   **                                                                       **
  ** Institución: Universidad de Antioquia                   **
  ** Curso: Laboratorio avanzado 3  2025-1                   **
  *************************************************************/
@@ -93,18 +92,18 @@ function setup() {
   cohete_pixels = 30;
 
   /**                 Posición de las imagenes                   **/
-  tierra_x0 = windowWidth/2 - tierra_pixels/2; //en pixeles
-  tierra_y0 = windowHeight/2 - tierra_pixels/2; //en pixeles
-  luna_x0 = 7*windowWidth/10 - luna_pixels/2; //en pixeles
-  luna_y0 = windowHeight/2 - luna_pixels/2; //en pixeles
+  tierra_x0 = windowWidth/2 
+  tierra_y0 = windowHeight/2 
+  luna_x0 = 7*windowWidth/10 
+  luna_y0 = windowHeight/2 
   cohete_x0;
   cohete_y0;
 
 
   /**                  Masa de los planetas                      **/
   G = 6.67430e13; //en m3⋅Rg−1⋅s−2[1] Rg es 10^27 g = 10^24 Kg
-  m_tierra = 5.97217;//en Rg ronna gramos o 10^24 kg
-  m_luna =  0.07346; // en Rg o 10^24 Kg
+  m_tierra = 5.974;//en Rg ronna gramos o 10^24 kg
+  m_luna =  0.07348; // en Rg o 10^24 Kg
 
   /**                Factores de conversión del sistema CM      **/
   pi_1 = m_tierra / (m_tierra + m_luna) ;
@@ -114,11 +113,10 @@ function setup() {
 
 
   /**                  Distancias                                **/
-  r12_pixeles = (luna_x0 + luna_pixels/2) - (tierra_x0 + tierra_pixels/2) ; //Distancia tierra luna en pixels
-  r12_km = 384399; //en km
+  r12_pixeles = luna_x0  - tierra_x0 ; //Distancia tierra luna en pixels
+  r12_km = 3.844e5; //en km
   km_per_pixel = r12_km/r12_pixeles; //factor de conversión pixels->km
   pixel_per_km = r12_pixeles/384399; //factor de conversion km->pixel
-  x_CM_px = (tierra_x0 + tierra_pixels/2) + 4670.80*pixel_per_km; //el factor es el cm cuando la tierra está en x=0
 
   /**               Velocidad angular del sistema de referencia  **/
   Omega = sqrt(G*(m_tierra + m_luna)/r12_km**3);
@@ -163,8 +161,8 @@ function draw() {
 */
 
 function mousePressed() {
-  x = (mouseX - x_CM_px) * km_per_pixel;
-  y = (windowHeight/2 - mouseY) * km_per_pixel; // flip Y axis (p5 Y is inverted)
+  x = (mouseX - tierra_x0) * km_per_pixel;
+  y = (tierra_y0- mouseY) * km_per_pixel; // flip Y axis (p5 Y is inverted)
   vx = 0;
   vy = 0;
   t = 0;
@@ -195,8 +193,8 @@ function simulacion(){
     vy = step[4]
 
     // convierte de km a pixels para dibujar
-    let draw_x = x_CM_px + x * pixel_per_km;
-    let draw_y = windowHeight/2 - y * pixel_per_km; // flip Y axis back
+    let draw_x = tierra_x0 + x * pixel_per_km;
+    let draw_y = tierra_y0 - y * pixel_per_km; // flip Y axis back
 
     image(coheteImg, draw_x - cohete_pixels/2, draw_y - cohete_pixels/2, cohete_pixels, cohete_pixels);
   }
@@ -216,30 +214,27 @@ function dibuja_fondo(){
   /********    Tierra + Luna ****************/
 
   //Dibuja la tierra
-  image(tierraImg, tierra_x0, tierra_y0 , tierra_pixels, tierra_pixels);
+  image(tierraImg, tierra_x0 - tierra_pixels/2, tierra_y0 -tierra_pixels/2 , tierra_pixels, tierra_pixels);
 
 
   //Dibuja la luna
-  image(lunaImg, luna_x0, luna_y0, luna_pixels, luna_pixels);
+  image(lunaImg, luna_x0 - luna_pixels/2, luna_y0-luna_pixels/2, luna_pixels, luna_pixels);
 
   //Orbita de la luna
   noFill();
   stroke(255, 255, 255);
-  circle((tierra_x0 + tierra_pixels/2), windowHeight/2, r12_pixeles*2);
+  circle(tierra_x0, tierra_y0, r12_pixeles*2);
 
-  //Dibuja el centro de masa
-  fill(0) //Negro
-  circle(x_CM_px, windowHeight/2, 10);
-
-  textSize(16);
-  textAlign(LEFT, CENTER);
-  text('CM', x_CM_px + 5, windowHeight/2);
 
 
   /***********  Puntos de Lagrange             *********/
   //Dibuja el punto de lagrange L4
-  let x_4_px = x_CM_px + 187528.6964 * pixel_per_km;
-  let y_4_px = windowHeight/2  - 332899.2992 *pixel_per_km;
+  //Los puntos de lagrange fueron tomados del libro :
+  //Orbital Mechanics for Engineering Students
+  //Ver el archivo de teoria.
+
+  let x_4_px = tierra_x0 + 187528.6963 * pixel_per_km;
+  let y_4_px = windowHeight/2  - 332899.29919 *pixel_per_km;
 
   fill(255, 0, 0) //rojo
   stroke(255, 0, 0);
@@ -253,7 +248,7 @@ function dibuja_fondo(){
 
   //Dibuja el punto L5
   let x_5_px = x_4_px;
-  let y_5_px = windowHeight/2  + 332899.2992 *pixel_per_km;
+  let y_5_px = windowHeight/2  +  332899.29919 *pixel_per_km;
 
   fill(255, 0, 0); //rojo
   stroke(255, 0, 0);
@@ -266,7 +261,7 @@ function dibuja_fondo(){
   text('L5', x_5_px + 6 , y_5_px);
 
   //Dibuja L3
-  let x_3_px = x_CM_px - 386313.4872 * pixel_per_km;
+  let x_3_px = tierra_x0 - 3.863e5 * pixel_per_km;
   let y_3_px = windowHeight/2;
 
   fill(255, 0, 0); //rojo
@@ -280,7 +275,7 @@ function dibuja_fondo(){
   text('L3', x_3_px + 6 , y_3_px);
 
   //Dibuja L1
-  let x_1_px = x_CM_px + 321671.3897 * pixel_per_km;
+  let x_1_px = tierra_x0 + 3.217e5 * pixel_per_km;
   let y_1_px = windowHeight/2;
 
   fill(255, 0, 0); //rojo
@@ -294,7 +289,7 @@ function dibuja_fondo(){
   text('L1', x_1_px + 6 , y_1_px);
 
   //Dibuja L2
-  let x_2_px = x_CM_px + 422801.3610 * pixel_per_km;
+  let x_2_px = tierra_x0 + 4.444e5* pixel_per_km;
   let y_2_px = windowHeight/2;
 
   fill(255, 0, 0); //rojo
