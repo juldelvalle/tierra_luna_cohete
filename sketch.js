@@ -7,6 +7,13 @@
  ** Institución: Universidad de Antioquia                   **
  ** Curso: Laboratorio avanzado 3  2025-1                   **
  *************************************************************/
+/**                Imagenes necesaria                   *****/
+//coheteImg.png, tierraImg.png, lunaImg.png
+
+/**                librerias necesarias                 *****/
+//p5.js
+
+
 
 
 
