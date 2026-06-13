@@ -3,7 +3,7 @@
  ******** Puntos de Lagrange del sistema Tierra-Luna   *******
  *************************************************************
  ** Autor:        Juliana del Valle                         **
- **               Juan Fernando Jaramillo                   **                                                                       **
+ **               Juan Fernando Jaramillo                   **                  
  ** Institución: Universidad de Antioquia                   **
  ** Curso: Laboratorio avanzado 3  2025-1                   **
  *************************************************************/
